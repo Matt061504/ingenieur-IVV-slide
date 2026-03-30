@@ -953,4 +953,103 @@
   <div class="slide slide-13">
     <div class="slide-label">12 · Tendances & Perspectives</div>
     <h2>Un métier en pleine <span class="accent">transformation</span></h2>
-    <div class="trend-grid" style="margin-t... (5 Ko restants)
+    <div class="trend-grid" style="margin-top:16px;grid-template-columns:1fr 1fr 1fr 1fr;">
+      <div class="trend-item">
+        <span class="trend-arrow">↑</span>
+        <strong>Automatisation des tests</strong>
+        <span>Python & CI/CD deviennent incontournables sur tous les projets</span>
+      </div>
+      <div class="trend-item">
+        <span class="trend-arrow">↑</span>
+        <strong>Shift-Left Testing</strong>
+        <span>L'I&V intervient dès la conception — approche DevOps généralisée</span>
+      </div>
+      <div class="trend-item">
+        <span class="trend-arrow">↑</span>
+        <strong>IA dans les tests</strong>
+        <span>Génération automatique de cas de test et analyse intelligente des logs</span>
+      </div>
+      <div class="trend-item">
+        <span class="trend-arrow">↑</span>
+        <strong>Cybersécurité embarquée</strong>
+        <span>Tests d'intrusion et validation sécurité en forte croissance</span>
+      </div>
+    </div>
+    <div class="card" style="margin-top:24px;padding:28px;background:linear-gradient(135deg,rgba(52,211,153,0.07),rgba(129,140,248,0.07));border-color:rgba(52,211,153,0.15);">
+      <div style="display:flex;justify-content:space-around;text-align:center;">
+        <div>
+          <div style="font-size:42px;font-weight:900;font-family:'Space Grotesk',sans-serif;color:var(--accent)">1000+</div>
+          <div style="font-size:13px;color:var(--muted);">Offres actives en permanence en France</div>
+        </div>
+        <div>
+          <div style="font-size:42px;font-weight:900;font-family:'Space Grotesk',sans-serif;color:var(--accent3)">&lt;3%</div>
+          <div style="font-size:13px;color:var(--muted);">Taux de chômage des ingénieurs</div>
+        </div>
+        <div>
+          <div style="font-size:42px;font-weight:900;font-family:'Space Grotesk',sans-serif;color:var(--accent)">65k</div>
+          <div style="font-size:13px;color:var(--muted);">Postes à pourvoir vs 47k diplômés/an</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- NAV -->
+<div class="nav">
+  <button class="nav-btn" id="prevBtn" onclick="navigate(-1)">←</button>
+  <div class="nav-dots" id="navDots"></div>
+  <button class="nav-btn" id="nextBtn" onclick="navigate(1)">→</button>
+</div>
+
+<div class="slide-num" id="slideNum">1 / 13</div>
+<div id="progressBar" style="width:7.7%"></div>
+
+<script>
+  let current = 0;
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+  const dotsContainer = document.getElementById('navDots');
+  const slideNum = document.getElementById('slideNum');
+  const progressBar = document.getElementById('progressBar');
+
+  // Build dots
+  for (let i = 0; i < total; i++) {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === 0 ? ' active' : '');
+    d.onclick = () => goTo(i);
+    dotsContainer.appendChild(d);
+  }
+
+  function goTo(idx) {
+    slides[current].classList.remove('active');
+    slides[current].classList.add('out');
+    setTimeout(() => slides[current].classList.remove('out'), 450);
+
+    current = (idx + total) % total;
+    slides[current].classList.add('active');
+
+    document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === current));
+    slideNum.textContent = (current + 1) + ' / ' + total;
+    progressBar.style.width = ((current + 1) / total * 100) + '%';
+  }
+
+  function navigate(dir) { goTo(current + dir); }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); navigate(1); }
+    if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')  { e.preventDefault(); navigate(-1); }
+    if (e.key === 'Home') goTo(0);
+    if (e.key === 'End')  goTo(total - 1);
+  });
+
+  // Touch swipe
+  let startX = 0;
+  document.addEventListener('touchstart', e => startX = e.touches[0].clientX);
+  document.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - startX;
+    if (Math.abs(dx) > 50) navigate(dx < 0 ? 1 : -1);
+  });
+</script>
+</body>
+</html>
